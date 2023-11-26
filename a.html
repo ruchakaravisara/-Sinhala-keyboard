@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #keyboard {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="keyboard"></div>
+<input id="input" type="text" oninput="updateDisplay()">
+<div id="output"></div>
+
+<script>
+    const mapping = {
+        'a': 'අ', 'aa': 'ආ', 'A': 'ඇ', 'Aa': 'ඈ', 'AA': 'ඈ', 'i': 'ඉ', 'ii': 'ඊ',
+        'u': 'උ', 'uu': 'ඌ', 'R': 'ඍ', 'Ru': 'ඎ', 'RR': 'ඎ', 'e': 'එ', 'ee': 'ඒ', 'E': 'ඓ', 'ai': 'ඓ',
+        'o': 'ඔ', 'oo': 'ඕ', 'ou': 'ඖ', 'au': 'ඖ',
+        'k': 'ක්', 'ka': 'ක', 'kaa': 'කා', 'kA': 'කැ', 'kAA': 'කෑ', 'kAa': 'කෑ', 'ki': 'කි', 'kii': 'කී', 'ku': 'කු', 'kuu': 'කූ', 'kru': 'ක්‍ර',
+        'kruu': 'ක්‍රූ', 'ke': 'කෙ', 'kee': 'කේ', 'kai': 'කෛ', 'ko': 'කො', 'koo': 'කෝ', 'kau': 'කෞ', 'kaH': 'කඃ', 'kax': 'කං', 'kaX': 'කඞ',
+        'kya': 'ක්‍ය', 'kYa': 'ක්‍ය', 'kra': 'ක්‍ර'
+    };
+
+    function updateDisplay() {
+        const inputText = document.getElementById('input').value;
+        const outputText = convertToSinhala(inputText);
+        document.getElementById('output').textContent = outputText;
+    }
+
+    function convertToSinhala(input) {
+        let output = '';
+        let currentSequence = '';
+
+        for (let i = 0; i < input.length; i++) {
+            currentSequence += input[i];
+
+            if (mapping[currentSequence]) {
+                output += mapping[currentSequence];
+                currentSequence = '';
+            }
+        }
+
+        return output;
+    }
+
+    const keyboardContainer = document.getElementById('keyboard');
+    for (let charCode = 97; charCode <= 122; charCode++) {
+        const char = String.fromCharCode(charCode);
+        const button = document.createElement('button');
+        button.textContent = char;
+        button.addEventListener('click', () => {
+            document.getElementById('input').value += char;
+            updateDisplay();
+        });
+        keyboardContainer.appendChild(button);
+    }
+</script>
+</body>
+</html>
